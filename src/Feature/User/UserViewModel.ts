@@ -1,6 +1,6 @@
 import { User } from "../../Model/User";
 import { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "../../Redux/Store";
 import { UserUseCase, UserUseCaseImpl } from "./UserUseCase";
 import { UserRepositoryImpl } from "../../Repository/UserRepository";
@@ -19,7 +19,6 @@ export const UserViewModel = (
   userUseCase: UserUseCase
 ): ViewModel<UserState, UserAction> => {
   const users = useSelector((state: RootState) => state.usersReducer.users);
-  const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
