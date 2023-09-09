@@ -1,12 +1,10 @@
-import { User } from "./User";
-import { useState } from "react";
+import { User } from "../../Model/User";
+import { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "../../Redux/Store";
 import { UserUseCase, UserUseCaseImpl } from "./UserUseCase";
-import { UserRepositoryImpl } from "./UserRepository";
-
-type ViewModel<State, Action> = {
-  state: State;
-  action: Action;
-};
+import { UserRepositoryImpl } from "../../Repository/UserRepository";
+import { ViewModel } from "../../Model/ViewModel";
 
 type UserState = {
   users: User[];
@@ -14,26 +12,34 @@ type UserState = {
 };
 
 type UserAction = {
-  getAll(): Promise<void>;
-  addUser(): Promise<void>;
+  didTapButton(): void;
 };
 
 export const UserViewModel = (
   userUseCase: UserUseCase
 ): ViewModel<UserState, UserAction> => {
-  const [users, setUsers] = useState<User[]>([]);
+  const users = useSelector((state: RootState) => state.usersReducer.users);
+  const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  useEffect(() => {
+    getAll();
+    return () => {};
+  }, []);
+
   const getAll = async () => {
-    setUsers(await userUseCase.getAll());
+    if (users.length > 0) {
+      return;
+    }
+    await userUseCase.getAll();
   };
 
-  const addUser = async () => {
+  const didTapButton = () => {
     const user: User = {
       id: "333",
       name: "Chris",
     };
-    setUsers([...users, user]);
+    userUseCase.addUser(user);
   };
 
   return {
@@ -42,8 +48,7 @@ export const UserViewModel = (
       isLoading,
     },
     action: {
-      getAll,
-      addUser,
+      didTapButton,
     },
   };
 };

@@ -1,29 +1,24 @@
 import React from "react";
 import logo from "./logo.svg";
 import "./App.css";
-import UserView from "./UserView";
+import UserView from "./Feature/User/UserView";
+import { Routes, Route } from "react-router";
+import PostView from "./Feature/Post/PostView";
+import NoMatch from "./Feature/NoMatch/NoMatch";
+import { Provider } from "react-redux"; // react-reduxからProviderをインポート
+import { store } from "./Redux/Store";
 
 function App() {
   return (
-    <>
-      <UserView />
+    <Provider store={store}>
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.tsx</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        <Routes>
+          <Route path="/" element={<UserView />} />
+          <Route path="/post" element={<PostView />} />
+          <Route path="/*" element={<NoMatch />} />
+        </Routes>
       </div>
-    </>
+    </Provider>
   );
 }
 
