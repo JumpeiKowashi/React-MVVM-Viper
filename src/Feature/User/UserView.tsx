@@ -11,9 +11,12 @@ const UserView = () => {
       {vm.state.users.map((user, index) => (
         <p key={index.toString()}>{user.name}</p>
       ))}
+      <>{vm.state.isLoading ? "true" : "false"}</>
       <Link to="/post">ポストへ</Link>
     </div>
   );
 };
 
 export default UserView;
+
+// View > ViewModel > UseCase > Repository

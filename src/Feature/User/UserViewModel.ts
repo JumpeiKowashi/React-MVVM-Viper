@@ -18,7 +18,9 @@ type UserAction = {
 export const UserViewModel = (
   userUseCase: UserUseCase
 ): ViewModel<UserState, UserAction> => {
-  const users = useSelector((state: RootState) => state.usersReducer.users);
+  const users = useSelector(
+    (state: RootState) => state.usersReducer.users //.filter((user) => user.name == "Alice")
+  );
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
@@ -34,6 +36,7 @@ export const UserViewModel = (
   };
 
   const didTapButton = () => {
+    setIsLoading(!isLoading);
     const user: User = {
       id: "333",
       name: "Chris",
